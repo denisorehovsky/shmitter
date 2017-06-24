@@ -62,6 +62,7 @@ INSTALLED_APPS += ['django_extensions', ]
 # TESTING
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+INSTALLED_APPS += ['django_nose', ]
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
