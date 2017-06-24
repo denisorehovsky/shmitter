@@ -12,12 +12,15 @@ django==1.10.7 # pyup: >=1.10,<1.11
 django-environ==0.4.3
 whitenoise==3.3.0
 
-
 # Forms
 django-braces==1.11.0
 
 # Models
 django-model-utils==3.0.0
+
+# Rest API
+djangorestframework==3.6.3
+django-filter==1.0.4
 
 # Images
 Pillow==4.1.1
