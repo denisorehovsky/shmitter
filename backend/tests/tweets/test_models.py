@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_tweet_body_length_should_be_less_than_or_equal_to_140():
-    f.TweetFactory(body='H' * 130)
+    f.TweetFactory(body='H' * 140)
     with pytest.raises(Exception):
         f.TweetFactory(body='H' * 150)
 
