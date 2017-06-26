@@ -103,6 +103,11 @@ class TestUserManager:
         ok_(user.is_staff)
         ok_(user.is_superuser)
 
+    def test_create_superuser_with_false_is_staff(self, user_data):
+        user_data['is_staff'] = False
+        with pytest.raises(ValueError):
+            User.objects.create_superuser(**user_data)
+
     def test_create_superuser_with_false_is_superuser(self, user_data):
         user_data['is_superuser'] = False
         with pytest.raises(ValueError):
