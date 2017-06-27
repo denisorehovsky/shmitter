@@ -29,7 +29,7 @@ class TestUserModel:
     def test__str__(self, user_obj, mocker):
         mock_get_short_name = mocker.patch.object(user_obj, 'get_short_name')
         user_obj.__str__()
-        mock_get_short_name.assert_called_once()
+        mock_get_short_name.assert_called_once_with()
 
     def test_get_full_name(self, user_obj):
         eq_(user_obj.get_full_name(), user_obj.full_name)
