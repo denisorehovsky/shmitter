@@ -3,7 +3,11 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+from .routers import router
+
 urlpatterns = [
+
+    url(r'^api/v1/', include(router.urls)),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
