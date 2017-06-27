@@ -9,9 +9,10 @@ before_script:
 - export DJANGO_SECRET_KEY=`openssl rand -base64 32`
 - psql -c 'CREATE DATABASE "shmitter";' -U postgres
 install:
-  - "pip install -r backend/requirements/test.txt"
+  - "pip install -r backend/requirements/test.txt codecov"
 script:
   - "cd backend && coverage run --source=shmitter --omit='*tests*,*migrations*,*admin*,*wsgi*' -m py.test -v --tb=native"
+after_success: codecov
 
 notifications:
   email: false
