@@ -59,6 +59,10 @@ DEBUG_TOOLBAR_CONFIG = {
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ['django_extensions', ]
 
+# django-autofixture
+# ------------------------------------------------------------------------------
+INSTALLED_APPS += ['autofixture', ]
+
 # TESTING
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
