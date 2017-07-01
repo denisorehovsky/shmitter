@@ -8,7 +8,7 @@ from .routers import router
 urlpatterns = [
 
     url(r'^api/v1/', include(router.urls)),
-    url(r'^api/v1/auth/', include('auth.urls')),
+    url(r'^api/v1/auth/', include('shmitter.authentication.urls')),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
