@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',                  # utilities for rest apis
     'rest_framework.authtoken',        # token authentication
     'django_filters',                  # django filters
+    'djoser',                          # rest authentication
 ]
 
 # Apps specific for this project go here.
@@ -268,4 +269,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     )
+}
+
+# DJOSER
+# ------------------------------------------------------------------------------
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': True,
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
 }
