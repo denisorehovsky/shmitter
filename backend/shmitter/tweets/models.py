@@ -7,6 +7,6 @@ class Tweet(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('created'))
 
     class Meta:
-        verbose_name = 'tweet'
-        verbose_name_plural = 'tweets'
+        verbose_name = _('tweet')
+        verbose_name_plural = _('tweets')
         ordering = ['-created', ]
