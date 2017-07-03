@@ -239,6 +239,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
+    'shmitter.authentication.backends.UsernameOrEmailAuthentication',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
