@@ -47,6 +47,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',                  # utilities for rest apis
     'rest_framework.authtoken',        # token authentication
+    'corsheaders',                     # cross-origin resource sharing
     'django_filters',                  # django filters
     'djoser',                          # rest authentication
 ]
@@ -66,6 +67,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -283,3 +285,7 @@ DJOSER = {
         'login': 'shmitter.authentication.serializers.LoginSerializer',
     }
 }
+
+# DJANGO CORS HEADERS
+# ------------------------------------------------------------------------------
+CORS_ORIGIN_ALLOW_ALL = True
