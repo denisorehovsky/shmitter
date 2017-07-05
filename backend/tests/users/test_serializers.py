@@ -15,9 +15,11 @@ def user_data():
     return model_to_dict(f.UserFactory.build())
 
 
-def test_user_serializer_hashes_password(user_data):
-    serializer = UserSerializer(data=user_data)
-    ok_(serializer.is_valid())
+class TestUserSerializer:
 
-    user = serializer.save()
-    ok_(check_password(user_data.get('password'), user.password))
+    def test_user_serializer_hashes_password(self, user_data):
+        serializer = UserSerializer(data=user_data)
+        ok_(serializer.is_valid())
+
+        user = serializer.save()
+        ok_(check_password(user_data.get('password'), user.password))
