@@ -2,6 +2,7 @@ import factory
 
 
 class TweetFactory(factory.django.DjangoModelFactory):
+    owner = factory.SubFactory('tests.factories.UserFactory')
     body = factory.Sequence(lambda n: 'body-{0}'.format(n))
 
     class Meta:
