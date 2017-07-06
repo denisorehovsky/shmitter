@@ -25,6 +25,16 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(response.data['username'], user_1.username)
 
+    def test_user_has_tweets(self, client):
+        user_1 = f.UserFactory.create()
+        f.TweetFactory.create(owner=user_1)
+        f.TweetFactory.create(owner=user_1)
+        url = reverse('user-detail', kwargs={'username': user_1.username})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(len(response.data['tweets']), 2)
+
     ############################
     # Update
     ############################
