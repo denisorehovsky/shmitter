@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
 
 from .models import User
-from .permissions import IsTheSameUserOrReadOnly
+from .permissions import UserPermission
 from .serializers import UserSerializer
 
 
@@ -12,4 +12,4 @@ class UserViewSet(mixins.RetrieveModelMixin,
     lookup_url_kwarg = User.USERNAME_FIELD
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsTheSameUserOrReadOnly, )
+    permission_classes = (UserPermission, )

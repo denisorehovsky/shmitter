@@ -52,42 +52,21 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(User.objects.get(pk=user_1_pk).email, 'testuser-1@gmail.com')
 
-    ############################
-    # Permissions
-    ############################
-
-    def test_anonymous_user_has_read_only_permissions(self, client):
-        user_1 = f.UserFactory.create(email='testuser-42@shmitter.com')
+    def test_user_can_only_update_himself(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create(email='testuser-42@shmitter.com')
         data = {
             'email': 'testuser-42@gmail.com'
         }
-        url = reverse('user-detail', kwargs={'username': user_1.username})
-
-        response = client.get(url)
-        eq_(response.status_code, status.HTTP_200_OK)
+        url = reverse('user-detail', kwargs={'username': user_2.username})
 
         response = client.patch(url, data)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_user_has_all_permissions_over_himself(self, client):
-        user_1 = f.UserFactory.create(email='testuser-1@shmitter.com')
-        data = {
-            'email': 'testuser-1@gmail.com'
-        }
-        url = reverse('user-detail', kwargs={'username': user_1.username})
-
         client.login(user_1)
         response = client.patch(url, data)
-        eq_(response.status_code, status.HTTP_200_OK)
-
-    def test_other_user_has_read_only_permissions(self, client):
-        user_1 = f.UserFactory.create(email='testuser-1@shmitter.com')
-        user_2 = f.UserFactory.create(email='testuser-2@shmitter.com')
-        data = {
-            'email': 'testuser@gmail.com'
-        }
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        eq_(response.status_code, status.HTTP_403_FORBIDDEN)
 
         client.login(user_2)
         response = client.patch(url, data)
-        eq_(response.status_code, status.HTTP_403_FORBIDDEN)
+        eq_(response.status_code, status.HTTP_200_OK)
