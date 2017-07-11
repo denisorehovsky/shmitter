@@ -168,8 +168,6 @@ class IsObjectOwner(ActionPermissionComponent):
     """
 
     def has_object_permission(self, request, view, obj):
-        if obj.owner is None:
-            return False
         return obj.owner == request.user
 
 
