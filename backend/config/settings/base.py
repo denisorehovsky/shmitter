@@ -271,6 +271,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     )
@@ -281,10 +282,7 @@ REST_FRAMEWORK = {
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'SERIALIZERS': {
-        'login': 'shmitter.authentication.serializers.LoginSerializer',
-    }
+    'ACTIVATION_URL': '#/activate/{uid}/{token}'
 }
 
 # DJANGO CORS HEADERS
