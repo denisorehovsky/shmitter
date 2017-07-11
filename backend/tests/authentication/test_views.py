@@ -20,4 +20,4 @@ def test_login(client):
 
     response = client.post(url, data)
     eq_(response.status_code, status.HTTP_200_OK)
-    ok_('auth_token' in response.data)
+    ok_('token' in response.data)

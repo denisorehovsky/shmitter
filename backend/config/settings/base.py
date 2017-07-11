@@ -282,10 +282,7 @@ REST_FRAMEWORK = {
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'SERIALIZERS': {
-        'login': 'shmitter.authentication.serializers.LoginSerializer',
-    }
+    'ACTIVATION_URL': '#/activate/{uid}/{token}'
 }
 
 # DJANGO CORS HEADERS
