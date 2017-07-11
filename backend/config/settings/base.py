@@ -7,6 +7,7 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+import datetime
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (backend/config/settings/base.py - 3 = backend/)
@@ -283,6 +284,12 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}'
+}
+
+# JWT
+# ------------------------------------------------------------------------------
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
 }
 
 # DJANGO CORS HEADERS
