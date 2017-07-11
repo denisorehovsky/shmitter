@@ -2,12 +2,12 @@ from django.conf.urls import url
 from django.contrib.auth import get_user_model
 
 from djoser import views as djoser_views
+from rest_framework_jwt import views as jwt_views
 
 User = get_user_model()
 
 urlpatterns = [
-    url(r'^login/$', djoser_views.LoginView.as_view(), name='login'),
-    url(r'^logout/$', djoser_views.LogoutView.as_view(), name='logout'),
+    url(r'^login/$', jwt_views.obtain_jwt_token, name='login'),
     url(r'^register/$', djoser_views.RegistrationView.as_view(), name='register'),
     url(r'^activate/$', djoser_views.ActivationView.as_view(), name='activate'),
     url(r'^password/$', djoser_views.SetPasswordView.as_view(), name='set_password'),
