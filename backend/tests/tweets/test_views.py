@@ -132,7 +132,7 @@ class TestTweetViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
 
     ############################
-    # Likes
+    # Likes and fans
     ############################
 
     def test_like_tweet(self, client):
@@ -165,3 +165,13 @@ class TestTweetViewSet:
             response = client.post(url)
             eq_(response.status_code, status.HTTP_200_OK)
             eq_(tweet_1.likes.count(), 0)
+
+    def test_tweet_fans(self, client):
+        tweet_1 = f.TweetFactory.create()
+        user_1 = f.UserFactory.create()
+        f.LikeTweetFactory.create(content_object=tweet_1, user=user_1)
+        url = reverse('tweet-fans', kwargs={'pk': tweet_1.pk})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(len(response.data), 1)

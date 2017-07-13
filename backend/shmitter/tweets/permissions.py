@@ -1,5 +1,5 @@
 from shmitter.base.permissions import ShmitterPermission
-from shmitter.base.permissions import IsAuthenticated, IsObjectOwner
+from shmitter.base.permissions import AllowAny, IsAuthenticated, IsObjectOwner
 
 
 class TweetPermission(ShmitterPermission):
@@ -10,3 +10,4 @@ class TweetPermission(ShmitterPermission):
 
     like_perms = IsAuthenticated()
     unlike_perms = IsAuthenticated()
+    fans_perms = AllowAny()
