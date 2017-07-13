@@ -33,6 +33,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user_{0}'.format(n))
     email = factory.Sequence(lambda n: 'user-{0}@example.com'.format(n))
     full_name = factory.Sequence(lambda n: 'full-name-{0}'.format(n))
+    about = factory.Sequence(lambda n: 'about-{0}'.format(n))
     password = factory.PostGenerationMethodCall('set_password', 'password')
 
     class Meta:

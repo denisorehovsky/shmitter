@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'full_name',
+            'about',
             'password',
             'tweets',
         )
