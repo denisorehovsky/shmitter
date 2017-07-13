@@ -2,7 +2,7 @@
   "name": "shmitter",
   "version": "1.0.0",
   "description": "Twitter clone",
-  "author": "Artem Matveev <andreygrin97@mail.ru>",
+  "author": "Denis Orehovsky <denis.orehovsky@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "vue": "^2.3.3",
-    "vue-router": "^2.3.1"
+    "vue-router": "^2.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
