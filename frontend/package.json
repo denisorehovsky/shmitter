@@ -68,6 +68,16 @@
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
   },
+  "ava": {
+    "require": "babel-register",
+    "babel": "inherit"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-2"
+    ]
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
