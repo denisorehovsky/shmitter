@@ -7,3 +7,6 @@ class TweetPermission(ShmitterPermission):
     destroy_perms = IsObjectOwner()
     update_perms = IsObjectOwner()
     partial_update_perms = IsObjectOwner()
+
+    like_perms = IsAuthenticated()
+    unlike_perms = IsAuthenticated()
