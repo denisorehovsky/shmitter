@@ -12,6 +12,6 @@ test('login', t => {
   nock(apiURL).post('/auth/login/', userData).reply(200, { token })
 
   return User.login(userData).then(response => {
-    t.is(response.data.token, token)
+    t.is(response.token, token)
   })
 })
