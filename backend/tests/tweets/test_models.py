@@ -15,13 +15,13 @@ class TestTweetModel:
         eq_(tweet_1.__str__(), 'Tweet {}'.format(tweet_1.id))
 
     def test_body_length_should_be_less_than_or_equal_to_140(self):
-        f.TweetFactory(body='H' * 140)
+        f.TweetFactory.create(body='H' * 140)
         with pytest.raises(Exception):
-            f.TweetFactory(body='H' * 150)
+            f.TweetFactory.create(body='H' * 150)
 
     def test_ordering(self):
-        tweet_1 = f.TweetFactory()
-        tweet_2 = f.TweetFactory()
+        tweet_1 = f.TweetFactory.create()
+        tweet_2 = f.TweetFactory.create()
 
         assert_queryset_equal(
             Tweet.objects.all(),
