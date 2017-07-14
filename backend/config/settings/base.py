@@ -57,6 +57,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'shmitter.authentication',
     'shmitter.base',
+    'shmitter.likes',
     'shmitter.tweets',
     'shmitter.users',
 ]

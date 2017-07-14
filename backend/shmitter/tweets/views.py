@@ -1,11 +1,14 @@
 from rest_framework import viewsets, mixins
 
+from shmitter.likes.mixins import LikedMixin, FansMixin
 from .models import Tweet
 from .permissions import TweetPermission
 from .serializers import TweetSerializer
 
 
-class TweetViewSet(mixins.CreateModelMixin,
+class TweetViewSet(LikedMixin,
+                   FansMixin,
+                   mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    mixins.RetrieveModelMixin,
                    mixins.UpdateModelMixin,

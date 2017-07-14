@@ -1,4 +1,24 @@
+from django.contrib.contenttypes.models import ContentType
+
 import factory
+
+
+class LikeFactory(factory.DjangoModelFactory):
+    object_id = factory.SelfAttribute('content_object.id')
+    content_type = factory.LazyAttribute(
+        lambda o: ContentType.objects.get_for_model(o.content_object))
+
+    class Meta:
+        exclude = ['content_object']
+        abstract = True
+
+
+class LikeTweetFactory(LikeFactory):
+    user = factory.SubFactory('tests.factories.UserFactory')
+    content_object = factory.SubFactory('tests.factories.TweetFactory')
+
+    class Meta:
+        model = 'likes.Like'
 
 
 class TweetFactory(factory.django.DjangoModelFactory):

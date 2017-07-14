@@ -130,3 +130,48 @@ class TestTweetViewSet:
         client.login(user_2)
         response = client.patch(url, data)
         eq_(response.status_code, status.HTTP_200_OK)
+
+    ############################
+    # Likes and fans
+    ############################
+
+    def test_like_tweet(self, client):
+        user_1 = f.UserFactory.create()
+        tweet_1 = f.TweetFactory.create(owner=user_1)
+        url = reverse('tweet-like', kwargs={'pk': tweet_1.pk})
+
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        eq_(tweet_1.likes.count(), 0)
+
+        client.login(user_1)
+        for _ in range(2):  # try to like tweet two times
+            response = client.post(url)
+            eq_(response.status_code, status.HTTP_200_OK)
+            eq_(tweet_1.likes.count(), 1)
+
+    def test_unlike_tweet(self, client):
+        user_1 = f.UserFactory.create()
+        tweet_1 = f.TweetFactory.create(owner=user_1)
+        f.LikeTweetFactory.create(content_object=tweet_1, user=user_1)
+        url = reverse('tweet-unlike', kwargs={'pk': tweet_1.pk})
+
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        eq_(tweet_1.likes.count(), 1)
+
+        client.login(user_1)
+        for _ in range(2):  # try to unlike tweet two times
+            response = client.post(url)
+            eq_(response.status_code, status.HTTP_200_OK)
+            eq_(tweet_1.likes.count(), 0)
+
+    def test_tweet_fans(self, client):
+        tweet_1 = f.TweetFactory.create()
+        user_1 = f.UserFactory.create()
+        f.LikeTweetFactory.create(content_object=tweet_1, user=user_1)
+        url = reverse('tweet-fans', kwargs={'pk': tweet_1.pk})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(len(response.data), 1)
