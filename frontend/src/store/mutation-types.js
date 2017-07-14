@@ -1,0 +1,4 @@
+// User
+export const AUTHENTICATE = 'AUTHENTICATE'
+export const DEAUTHENTICATE = 'DEAUTHENTICATE'
+export const SET_TOKEN = 'SET_TOKEN'
