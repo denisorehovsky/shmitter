@@ -43,6 +43,10 @@ def test_get_liked():
         services.get_liked(Tweet, user_1),
         [repr(tweet_2), repr(tweet_1)]
     )
+    assert_queryset_equal(
+        services.get_liked(Tweet, user_1.id),
+        [repr(tweet_2), repr(tweet_1)]
+    )
 
 
 def test_get_fans():
