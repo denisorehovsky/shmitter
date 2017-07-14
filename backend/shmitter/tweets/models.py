@@ -16,3 +16,6 @@ class Tweet(models.Model):
         verbose_name = _('tweet')
         verbose_name_plural = _('tweets')
         ordering = ['-created', ]
+
+    def __str__(self):
+        return 'Tweet {}'.format(self.id)
