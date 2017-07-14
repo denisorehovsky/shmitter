@@ -12,5 +12,6 @@ class TweetSerializer(serializers.ModelSerializer):
             'id',
             'owner',
             'body',
+            'total_likes',
             'created',
         )

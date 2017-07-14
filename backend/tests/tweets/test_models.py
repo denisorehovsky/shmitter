@@ -27,3 +27,10 @@ class TestTweetModel:
             Tweet.objects.all(),
             [repr(tweet_2), repr(tweet_1)]
         )
+
+    def test_total_likes(self, mocker):
+        tweet_1 = f.TweetFactory.create()
+        likes_mock = mocker.patch('shmitter.tweets.models.Tweet.likes')
+
+        tweet_1.total_likes
+        likes_mock.count.assert_called_once_with()

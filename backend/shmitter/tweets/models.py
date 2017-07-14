@@ -19,3 +19,7 @@ class Tweet(models.Model):
 
     def __str__(self):
         return 'Tweet {}'.format(self.id)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
