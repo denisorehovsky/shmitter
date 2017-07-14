@@ -39,6 +39,24 @@ def remove_like(obj, user):
         likes.delete()
 
 
+def get_liked(model, user_or_id):
+    """Get the objects liked by a user.
+
+    :param model: Show only objects of this kind. Can be any Django model class.
+    :param user_or_id: User model instance or id.
+
+    :return: Queryset of objects liked by a user.
+    """
+    obj_type = ContentType.objects.get_for_model(model)
+    if isinstance(user_or_id, get_user_model()):
+        user_id = user_or_id.id
+    else:
+        user_id = user_or_id
+
+    return model.objects.filter(
+        likes__content_type=obj_type, likes__user_id=user_id)
+
+
 def get_fans(obj):
     """Get the users which liked an `obj`.
 

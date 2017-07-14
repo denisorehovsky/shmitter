@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from shmitter.likes.services import get_liked
+from shmitter.tweets.models import Tweet
 from shmitter.tweets.serializers import TweetSerializer
 from .models import User
 
@@ -12,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     tweets = serializers.SerializerMethodField()
+    liked_tweets = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -22,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
             'about',
             'password',
             'tweets',
+            'liked_tweets',
         )
 
     def create(self, validated_data):
@@ -29,3 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_tweets(self, obj):
         return TweetSerializer(obj.tweets.all(), many=True).data
+
+    def get_liked_tweets(self, obj):
+        return TweetSerializer(get_liked(Tweet, obj), many=True).data
