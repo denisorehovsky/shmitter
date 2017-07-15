@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',                     # cross-origin resource sharing
     'django_filters',                  # django filters
     'djoser',                          # rest authentication
+    'friendship',                      # friendships and follows
 ]
 
 # Apps specific for this project go here.
