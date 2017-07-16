@@ -15,5 +15,6 @@ class UserPermission(ShmitterPermission):
     partial_update_perms = IsTheSameUser()
 
     follow_perms = IsAuthenticated()
+    unfollow_perms = IsAuthenticated()
     followers_perms = AllowAny()
     following_perms = AllowAny()

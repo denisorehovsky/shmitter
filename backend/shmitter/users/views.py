@@ -26,6 +26,14 @@ class UserViewSet(mixins.RetrieveModelMixin,
         Follow.objects.add_follower(follower=follower, followee=followee)
         return Response()
 
+    @detail_route(methods=['POST'])
+    def unfollow(self, request, *args, **kwargs):
+        followee = self.get_object()
+        follower = request.user
+
+        Follow.objects.remove_follower(follower=follower, followee=followee)
+        return Response()
+
     @detail_route(methods=['GET'])
     def followers(self, request, *args, **kwargs):
         user = self.get_object()

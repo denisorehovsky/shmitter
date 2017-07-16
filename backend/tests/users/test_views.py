@@ -101,6 +101,20 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
         ok_(Follow.objects.follows(follower=user_1, followee=user_2))
 
+    def test_unfollow(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create()
+        f.FollowFactory(follower=user_1, followee=user_2)
+        url = reverse('user-unfollow', kwargs={'username': user_2.username})
+
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        client.login(user_1)
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        ok_(Follow.objects.follows(follower=user_1, followee=user_2) is False)
+
     def test_followers(self, client):
         user_1 = f.UserFactory.create()
         user_2 = f.UserFactory.create()
