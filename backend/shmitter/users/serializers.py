@@ -6,6 +6,17 @@ from shmitter.tweets.serializers import TweetSerializer
 from .models import User
 
 
+class UserBasicInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'full_name',
+            'about',
+        )
+
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=128,

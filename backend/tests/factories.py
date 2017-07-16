@@ -3,6 +3,14 @@ from django.contrib.contenttypes.models import ContentType
 import factory
 
 
+class FollowFactory(factory.DjangoModelFactory):
+    follower = factory.SubFactory('tests.factories.UserFactory')
+    followee = factory.SubFactory('tests.factories.UserFactory')
+
+    class Meta:
+        model = 'friendship.Follow'
+
+
 class LikeFactory(factory.DjangoModelFactory):
     object_id = factory.SelfAttribute('content_object.id')
     content_type = factory.LazyAttribute(
