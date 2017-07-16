@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "bulma": "^0.4.3",
     "js-cookie": "^2.1.4",
     "vue": "^2.3.3",
     "vue-axios": "^2.0.2",
