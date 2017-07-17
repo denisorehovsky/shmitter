@@ -43,7 +43,15 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
     def get_tweets(self, obj):
-        return TweetSerializer(obj.tweets.all(), many=True).data
+        return TweetSerializer(
+            obj.tweets.all(),
+            many=True,
+            context=self.context
+        ).data
 
     def get_liked_tweets(self, obj):
-        return TweetSerializer(get_liked(Tweet, obj), many=True).data
+        return TweetSerializer(
+            get_liked(Tweet, obj),
+            many=True,
+            context=self.context
+        ).data

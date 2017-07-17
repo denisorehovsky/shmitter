@@ -166,6 +166,27 @@ class TestTweetViewSet:
             eq_(response.status_code, status.HTTP_200_OK)
             eq_(tweet_1.likes.count(), 0)
 
+    def test_is_fan(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create()
+        tweet_1 = f.TweetFactory.create()
+        f.LikeTweetFactory.create(content_object=tweet_1, user=user_2)
+        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_fan'], False)
+
+        client.login(user_1)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_fan'], False)
+
+        client.login(user_2)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_fan'], True)
+
     def test_tweet_fans(self, client):
         tweet_1 = f.TweetFactory.create()
         user_1 = f.UserFactory.create()
