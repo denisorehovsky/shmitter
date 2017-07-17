@@ -1,5 +1,5 @@
 import pytest
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 from django_nose.tools import assert_queryset_equal
 
 from shmitter.likes import services
@@ -47,6 +47,17 @@ def test_get_liked():
         services.get_liked(Tweet, user_1.id),
         [repr(tweet_2), repr(tweet_1)]
     )
+
+
+def test_is_fan():
+    user_1 = f.UserFactory()
+    tweet_1 = f.TweetFactory()
+    tweet_2 = f.TweetFactory()
+
+    f.LikeTweetFactory(content_object=tweet_1, user=user_1)
+
+    ok_(services.is_fan(tweet_1, user_1))
+    ok_(services.is_fan(tweet_2, user_1) is False)
 
 
 def test_get_fans():
