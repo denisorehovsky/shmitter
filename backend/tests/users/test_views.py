@@ -26,6 +26,24 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(response.data['username'], user_1.username)
 
+    def test_retrieve_me(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create()
+        url = reverse('user-me')
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        client.login(user_1)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['username'], user_1.username)
+
+        client.login(user_2)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['username'], user_2.username)
+
     def test_user_has_tweets(self, client):
         user_1 = f.UserFactory.create()
         f.TweetFactory.create(owner=user_1)

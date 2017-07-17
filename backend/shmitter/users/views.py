@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 
 from friendship.models import Follow
@@ -17,6 +17,13 @@ class UserViewSet(mixins.RetrieveModelMixin,
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (UserPermission, )
+
+    @list_route(methods=['GET'])
+    def me(self, request):
+        me = request.user
+
+        serializer = self.get_serializer(me)
+        return Response(serializer.data)
 
     @detail_route(methods=['POST'])
     def follow(self, request, *args, **kwargs):
