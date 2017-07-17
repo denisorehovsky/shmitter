@@ -88,6 +88,23 @@ class TestUserViewSet:
     # Follow
     ############################
 
+    def test_is_follows(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create()
+        f.FollowFactory(follower=user_1, followee=user_2)
+
+        url = reverse('user-detail', kwargs={'username': user_1.username})
+        client.login(user_2)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_follows'], False)
+
+        url = reverse('user-detail', kwargs={'username': user_2.username})
+        client.login(user_1)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_follows'], True)
+
     def test_follow(self, client):
         user_1 = f.UserFactory.create()
         user_2 = f.UserFactory.create()
