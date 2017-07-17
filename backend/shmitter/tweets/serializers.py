@@ -20,9 +20,9 @@ class TweetSerializer(serializers.ModelSerializer):
             'created',
         )
 
-    def get_is_fan(self, obj):
+    def get_is_fan(self, obj) -> bool:
         """
-        Check if a `request.user` has liked a tweet.
+        Check if a `request.user` has liked this tweet (`obj`).
         """
         user = self.context.get('request').user
         return services.is_fan(obj, user)
