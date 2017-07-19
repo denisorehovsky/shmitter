@@ -103,7 +103,7 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
 
     ############################
-    # Follow
+    # Follows
     ############################
 
     def test_is_follows(self, client):
