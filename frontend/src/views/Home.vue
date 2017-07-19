@@ -1,9 +1,23 @@
 <template lang="pug">
-  h2 Hello home
+  #app
+    navbar
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import Navbar from '@/components/Navbar'
+
 export default {
-  name: 'home'
+  name: 'home',
+  components: {
+    'navbar': Navbar
+  },
+  computed: mapGetters(['isGuest']),
+  created () {
+    if (this.isGuest) {
+      this.$router.push({ name: 'login' })
+    }
+  }
 }
 </script>
