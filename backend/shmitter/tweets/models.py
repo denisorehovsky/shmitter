@@ -10,6 +10,8 @@ class Tweet(models.Model):
         related_name='tweets', verbose_name=_('owner'))
     body = models.CharField(max_length=140, verbose_name=_('body'))
     likes = GenericRelation('likes.Like')
+    retweeted_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='retweets')
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('created'))
 
     class Meta:

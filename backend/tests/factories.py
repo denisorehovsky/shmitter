@@ -36,6 +36,17 @@ class TweetFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'tweets.Tweet'
 
+    @factory.post_generation
+    def retweeted_by(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of tags were passed in, use them
+            for user in extracted:
+                self.retweeted_by.add(user)
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user_{0}'.format(n))
