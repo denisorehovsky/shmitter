@@ -20,6 +20,7 @@ class TweetSerializer(serializers.ModelSerializer):
             'is_fan',
             'is_retweeted',
             'total_likes',
+            'total_retweets',
             'created',
         )
 
