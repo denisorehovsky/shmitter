@@ -11,3 +11,5 @@ class TweetPermission(ShmitterPermission):
     like_perms = IsAuthenticated()
     unlike_perms = IsAuthenticated()
     fans_perms = AllowAny()
+    retweet_perms = IsAuthenticated()
+    undo_retweet_perms = IsAuthenticated()

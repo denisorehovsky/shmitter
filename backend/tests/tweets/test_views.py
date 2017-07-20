@@ -196,3 +196,53 @@ class TestTweetViewSet:
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(len(response.data), 1)
+
+    ############################
+    # Retweets
+    ############################
+
+    def test_retweet(self, client):
+        user_1 = f.UserFactory()
+        tweet_1 = f.TweetFactory()
+        url = reverse('tweet-retweet', kwargs={'pk': tweet_1.pk})
+
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        client.login(user_1)
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(user_1.retweets.count(), 1)
+
+    def test_undo_retweet(self, client):
+        user_1 = f.UserFactory()
+        tweet_1 = f.TweetFactory(retweeted_by=[user_1])
+        url = reverse('tweet-undo-retweet', kwargs={'pk': tweet_1.pk})
+
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        client.login(user_1)
+        response = client.post(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(user_1.retweets.count(), 0)
+
+    def test_is_retweeted(self, client):
+        user_1 = f.UserFactory.create()
+        user_2 = f.UserFactory.create()
+        tweet_1 = f.TweetFactory.create(retweeted_by=[user_2])
+        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_retweeted'], False)
+
+        client.login(user_1)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_retweeted'], False)
+
+        client.login(user_2)
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['is_retweeted'], True)
