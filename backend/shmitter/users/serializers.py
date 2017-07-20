@@ -29,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     is_follows = serializers.SerializerMethodField()
     tweets = serializers.SerializerMethodField()
+    retweets = serializers.SerializerMethodField()
     liked_tweets = serializers.SerializerMethodField()
 
     class Meta:
@@ -41,6 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
             'password',
             'is_follows',
             'tweets',
+            'retweets',
             'liked_tweets',
         )
 
@@ -61,6 +63,13 @@ class UserSerializer(serializers.ModelSerializer):
     def get_tweets(self, obj):
         return TweetSerializer(
             obj.tweets.all(),
+            many=True,
+            context=self.context
+        ).data
+
+    def get_retweets(self, obj):
+        return TweetSerializer(
+            obj.retweets.all(),
             many=True,
             context=self.context
         ).data

@@ -54,6 +54,16 @@ class TestUserViewSet:
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(len(response.data['tweets']), 2)
 
+    def test_user_has_retweets(self, client):
+        user_1 = f.UserFactory()
+        f.TweetFactory(retweeted_by=[user_1])
+        f.TweetFactory(retweeted_by=[user_1])
+        url = reverse('user-detail', kwargs={'username': user_1.username})
+
+        response = client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(len(response.data['retweets']), 2)
+
     def test_user_has_liked_tweets(self, client):
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory()
