@@ -10,7 +10,7 @@ pytestmark = pytest.mark.django_db
 class TestJSONWebTokenSerializer:
 
     def test_authenticate_with_valid_data(self):
-        f.UserFactory.create(
+        f.UserFactory(
             email='testuser_1@gmail.com',
             password='testuser_1')
 

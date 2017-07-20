@@ -19,7 +19,7 @@ class TestUserViewSet:
     ############################
 
     def test_retrieve_user(self, client):
-        user_1 = f.UserFactory.create()
+        user_1 = f.UserFactory()
         url = reverse('user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
@@ -27,8 +27,8 @@ class TestUserViewSet:
         eq_(response.data['username'], user_1.username)
 
     def test_retrieve_me(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         url = reverse('user-me')
 
         response = client.get(url)
@@ -45,9 +45,9 @@ class TestUserViewSet:
         eq_(response.data['username'], user_2.username)
 
     def test_user_has_tweets(self, client):
-        user_1 = f.UserFactory.create()
-        f.TweetFactory.create(owner=user_1)
-        f.TweetFactory.create(owner=user_1)
+        user_1 = f.UserFactory()
+        f.TweetFactory(owner=user_1)
+        f.TweetFactory(owner=user_1)
         url = reverse('user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
@@ -71,7 +71,7 @@ class TestUserViewSet:
     ############################
 
     def test_update_user(self, client):
-        user_1 = f.UserFactory.create(email='testuser-1@shmitter.com')
+        user_1 = f.UserFactory(email='testuser-1@shmitter.com')
         user_1_pk = user_1.pk
         data = {
             'email': 'testuser-1@gmail.com'
@@ -84,8 +84,8 @@ class TestUserViewSet:
         eq_(User.objects.get(pk=user_1_pk).email, 'testuser-1@gmail.com')
 
     def test_user_can_only_update_himself(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create(email='testuser-42@shmitter.com')
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory(email='testuser-42@shmitter.com')
         data = {
             'email': 'testuser-42@gmail.com'
         }
@@ -107,8 +107,8 @@ class TestUserViewSet:
     ############################
 
     def test_is_follows(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
 
         url = reverse('user-detail', kwargs={'username': user_1.username})
@@ -124,8 +124,8 @@ class TestUserViewSet:
         eq_(response.data['is_follows'], True)
 
     def test_follow(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         url = reverse('user-follow', kwargs={'username': user_2.username})
 
         response = client.post(url)
@@ -137,8 +137,8 @@ class TestUserViewSet:
         ok_(Follow.objects.follows(follower=user_1, followee=user_2))
 
     def test_unfollow(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
         url = reverse('user-unfollow', kwargs={'username': user_2.username})
 
@@ -151,8 +151,8 @@ class TestUserViewSet:
         ok_(Follow.objects.follows(follower=user_1, followee=user_2) is False)
 
     def test_followers(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
         url = reverse('user-followers', kwargs={'username': user_2.username})
 
@@ -161,8 +161,8 @@ class TestUserViewSet:
         eq_(response.data[0]['username'], user_1.username)
 
     def test_following(self, client):
-        user_1 = f.UserFactory.create()
-        user_2 = f.UserFactory.create()
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
         url = reverse('user-following', kwargs={'username': user_1.username})
 

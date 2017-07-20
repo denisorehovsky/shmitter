@@ -61,13 +61,13 @@ def test_is_fan():
 
 
 def test_get_fans():
-    tweet_1 = f.TweetFactory.create()
-    user_1 = f.UserFactory.create()
-    user_2 = f.UserFactory.create()
-    f.UserFactory.create()
+    tweet_1 = f.TweetFactory()
+    user_1 = f.UserFactory()
+    user_2 = f.UserFactory()
+    f.UserFactory()
 
-    f.LikeTweetFactory.create(content_object=tweet_1, user=user_1)
-    f.LikeTweetFactory.create(content_object=tweet_1, user=user_2)
+    f.LikeTweetFactory(content_object=tweet_1, user=user_1)
+    f.LikeTweetFactory(content_object=tweet_1, user=user_2)
 
     assert_queryset_equal(
         services.get_fans(tweet_1),

@@ -16,7 +16,7 @@ def test_username_or_email_authentication():
         'email': 'testuser42@gmail.com',
         'password': 'testuser'
     }
-    user_1 = f.UserFactory.create(**user_credentials)
+    user_1 = f.UserFactory(**user_credentials)
 
     eq_(authenticate(username=user_credentials['username'], password=user_credentials['password']),
         user_1)

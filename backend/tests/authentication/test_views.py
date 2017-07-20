@@ -11,7 +11,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_login(client):
-    user_1 = f.UserFactory.create(password='password')
+    user_1 = f.UserFactory(password='password')
     data = {
         'username_or_email': user_1.email,
         'password': 'password'
