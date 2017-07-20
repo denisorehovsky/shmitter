@@ -34,3 +34,10 @@ class TestTweetModel:
 
         tweet_1.total_likes
         likes_mock.count.assert_called_once_with()
+
+    def test_total_retweets(self, mocker):
+        tweet_1 = f.TweetFactory()
+        retweets_mock = mocker.patch('shmitter.tweets.models.Tweet.retweeted_by')
+
+        tweet_1.total_retweets
+        retweets_mock.count.assert_called_once_with()

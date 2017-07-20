@@ -25,3 +25,7 @@ class Tweet(models.Model):
     @property
     def total_likes(self):
         return self.likes.count()
+
+    @property
+    def total_retweets(self):
+        return self.retweeted_by.count()

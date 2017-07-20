@@ -8,14 +8,6 @@ from .. import factories as f
 pytestmark = pytest.mark.django_db
 
 
-def test_get_total_number_of_retweets():
-    user_1 = f.UserFactory()
-    user_2 = f.UserFactory()
-    tweet_1 = f.TweetFactory(retweeted_by=[user_1, user_2])
-
-    eq_(services.get_total_number_of_retweets(tweet_1), 2)
-
-
 def test_is_retweeted():
     user_1 = f.UserFactory()
     user_2 = f.UserFactory()

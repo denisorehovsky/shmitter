@@ -3,14 +3,6 @@ from rest_framework.compat import is_authenticated
 from .models import Tweet
 
 
-def get_total_number_of_retweets(tweet) -> int:
-    """Get total number of retweets of the `tweet`.
-
-    :param tweet: :class:`~shmitter.tweets.models.Tweet` instance.
-    """
-    return tweet.retweeted_by.count()
-
-
 def is_retweeted(tweet, user) -> bool:
     """Check whether a `user` has retweeted the `tweet` or not.
 
