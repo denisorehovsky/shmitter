@@ -22,7 +22,7 @@ class TestTweetViewSet:
         data = {
             'body': 'tweet body'
         }
-        url = reverse('tweet-list')
+        url = reverse('api:tweet-list')
 
         client.login(user_1)
         response = client.post(url, data)
@@ -33,7 +33,7 @@ class TestTweetViewSet:
         data = {
             'body': 'tweet body'
         }
-        url = reverse('tweet-list')
+        url = reverse('api:tweet-list')
 
         client.login(user_1)
         response = client.post(url, data)
@@ -45,7 +45,7 @@ class TestTweetViewSet:
         data = {
             'body': 'tweet body'
         }
-        url = reverse('tweet-list')
+        url = reverse('api:tweet-list')
 
         response = client.post(url, data)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -62,7 +62,7 @@ class TestTweetViewSet:
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory(owner=user_1)
         tweet_1_pk = tweet_1.pk
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         client.login(user_1)
         response = client.delete(url)
@@ -74,7 +74,7 @@ class TestTweetViewSet:
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
         tweet_1 = f.TweetFactory(owner=user_2)
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         client.login(user_1)
         response = client.delete(url)
@@ -90,7 +90,7 @@ class TestTweetViewSet:
 
     def test_retrieve_tweet(self, client):
         tweet_1 = f.TweetFactory()
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -107,7 +107,7 @@ class TestTweetViewSet:
         data = {
             'body': 'tweet body'
         }
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         client.login(user_1)
         response = client.patch(url, data)
@@ -121,7 +121,7 @@ class TestTweetViewSet:
         data = {
             'body': 'tweet body'
         }
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         client.login(user_1)
         response = client.patch(url, data)
@@ -138,7 +138,7 @@ class TestTweetViewSet:
     def test_like_tweet(self, client):
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory(owner=user_1)
-        url = reverse('tweet-like', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-like', kwargs={'pk': tweet_1.pk})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -154,7 +154,7 @@ class TestTweetViewSet:
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory(owner=user_1)
         f.LikeTweetFactory(content_object=tweet_1, user=user_1)
-        url = reverse('tweet-unlike', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-unlike', kwargs={'pk': tweet_1.pk})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -171,7 +171,7 @@ class TestTweetViewSet:
         user_2 = f.UserFactory()
         tweet_1 = f.TweetFactory()
         f.LikeTweetFactory(content_object=tweet_1, user=user_2)
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -191,7 +191,7 @@ class TestTweetViewSet:
         tweet_1 = f.TweetFactory()
         user_1 = f.UserFactory()
         f.LikeTweetFactory(content_object=tweet_1, user=user_1)
-        url = reverse('tweet-fans', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-fans', kwargs={'pk': tweet_1.pk})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -204,7 +204,7 @@ class TestTweetViewSet:
     def test_retweet(self, client):
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory()
-        url = reverse('tweet-retweet', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-retweet', kwargs={'pk': tweet_1.pk})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -217,7 +217,7 @@ class TestTweetViewSet:
     def test_undo_retweet(self, client):
         user_1 = f.UserFactory()
         tweet_1 = f.TweetFactory(retweeted_by=[user_1])
-        url = reverse('tweet-undo-retweet', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-undo-retweet', kwargs={'pk': tweet_1.pk})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -231,7 +231,7 @@ class TestTweetViewSet:
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
         tweet_1 = f.TweetFactory(retweeted_by=[user_2])
-        url = reverse('tweet-detail', kwargs={'pk': tweet_1.pk})
+        url = reverse('api:tweet-detail', kwargs={'pk': tweet_1.pk})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)

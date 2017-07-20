@@ -16,7 +16,7 @@ def test_login(client):
         'username_or_email': user_1.email,
         'password': 'password'
     }
-    url = reverse('login')
+    url = reverse('api:login')
 
     response = client.post(url, data)
     eq_(response.status_code, status.HTTP_200_OK)

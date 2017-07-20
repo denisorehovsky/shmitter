@@ -20,7 +20,7 @@ class TestUserViewSet:
 
     def test_retrieve_user(self, client):
         user_1 = f.UserFactory()
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -29,7 +29,7 @@ class TestUserViewSet:
     def test_retrieve_me(self, client):
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
-        url = reverse('user-me')
+        url = reverse('api:user-me')
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -48,7 +48,7 @@ class TestUserViewSet:
         user_1 = f.UserFactory()
         f.TweetFactory(owner=user_1)
         f.TweetFactory(owner=user_1)
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -58,7 +58,7 @@ class TestUserViewSet:
         user_1 = f.UserFactory()
         f.TweetFactory(retweeted_by=[user_1])
         f.TweetFactory(retweeted_by=[user_1])
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -70,7 +70,7 @@ class TestUserViewSet:
         tweet_2 = f.TweetFactory()
         f.LikeTweetFactory(content_object=tweet_1, user=user_1)
         f.LikeTweetFactory(content_object=tweet_2, user=user_1)
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -86,7 +86,7 @@ class TestUserViewSet:
         data = {
             'email': 'testuser-1@gmail.com'
         }
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
 
         client.login(user_1)
         response = client.patch(url, data)
@@ -99,7 +99,7 @@ class TestUserViewSet:
         data = {
             'email': 'testuser-42@gmail.com'
         }
-        url = reverse('user-detail', kwargs={'username': user_2.username})
+        url = reverse('api:user-detail', kwargs={'username': user_2.username})
 
         response = client.patch(url, data)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -121,13 +121,13 @@ class TestUserViewSet:
         user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
 
-        url = reverse('user-detail', kwargs={'username': user_1.username})
+        url = reverse('api:user-detail', kwargs={'username': user_1.username})
         client.login(user_2)
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(response.data['is_follows'], False)
 
-        url = reverse('user-detail', kwargs={'username': user_2.username})
+        url = reverse('api:user-detail', kwargs={'username': user_2.username})
         client.login(user_1)
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -136,7 +136,7 @@ class TestUserViewSet:
     def test_follow(self, client):
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
-        url = reverse('user-follow', kwargs={'username': user_2.username})
+        url = reverse('api:user-follow', kwargs={'username': user_2.username})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -150,7 +150,7 @@ class TestUserViewSet:
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
-        url = reverse('user-unfollow', kwargs={'username': user_2.username})
+        url = reverse('api:user-unfollow', kwargs={'username': user_2.username})
 
         response = client.post(url)
         eq_(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -164,7 +164,7 @@ class TestUserViewSet:
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
-        url = reverse('user-followers', kwargs={'username': user_2.username})
+        url = reverse('api:user-followers', kwargs={'username': user_2.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)
@@ -174,7 +174,7 @@ class TestUserViewSet:
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
         f.FollowFactory(follower=user_1, followee=user_2)
-        url = reverse('user-following', kwargs={'username': user_1.username})
+        url = reverse('api:user-following', kwargs={'username': user_1.username})
 
         response = client.get(url)
         eq_(response.status_code, status.HTTP_200_OK)

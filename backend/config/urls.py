@@ -3,12 +3,17 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from .routers import router
+
+# Register API
+apipatterns = [
+    url(r'^', include('shmitter.authentication.urls')),
+    url(r'^', include('shmitter.tweets.urls')),
+    url(r'^', include('shmitter.users.urls')),
+]
 
 urlpatterns = [
 
-    url(r'^api/v1/', include(router.urls)),
-    url(r'^api/v1/auth/', include('shmitter.authentication.urls')),
+    url(r'^api/v1/', include((apipatterns, 'api'), namespace='api')),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
