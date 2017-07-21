@@ -3,6 +3,7 @@
 import Vue from 'vue'
 
 import 'bulma/css/bulma.css'
+import '../style/index.sass'
 
 import App from './App'
 import router from './router'
