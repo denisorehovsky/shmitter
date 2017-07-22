@@ -5,19 +5,20 @@
         .column.is-one-third
         .column
           .card
-            .card-content
-              .content
-                .field
-                  p.control
-                    input.input(v-model="usernameOrEmail" type="text" placeholder="Username or email")
-                .field.has-addons
-                  p.control.is-expanded
-                    input.input(v-model="password" type="password" placeholder="Password")
-                  p.control
-                    a.button Forgot?
-              footer.card-footer
-                a.card-footer-item
-                  button.button.is-success(@click="login") Log in
+            form(@submit.prevent="onSubmit")
+              .card-content
+                .content
+                  .field
+                    p.control
+                      input.input(v-model="usernameOrEmail" type="text" placeholder="Username or email")
+                  .field.has-addons
+                    p.control.is-expanded
+                      input.input(v-model="password" type="password" placeholder="Password")
+                    p.control
+                      a.button Forgot?
+                footer.card-footer
+                  a.card-footer-item
+                    button.button.is-success(type="submit" @click="login") Log in
           .content.has-text-centered.mt4
             p
               | Don't have an account?
