@@ -15,3 +15,15 @@ test('login', t => {
     t.is(response.token, token)
   })
 })
+
+test('activate', t => {
+  const data = {
+    uid: 'OQ',
+    token: '4n-50689d23'
+  }
+  nock(apiURL).post('/auth/activate/', data).reply(204)
+
+  return User.activate(data).then(response => {
+    t.is(response.status, 204)
+  })
+})

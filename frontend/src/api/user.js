@@ -6,5 +6,8 @@ export default {
       .then(response => {
         return response.data
       })
+  },
+  activate (data, config) {
+    return HTTP.post('/auth/activate/', data, config)
   }
 }
