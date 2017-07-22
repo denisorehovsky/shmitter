@@ -1,3 +1,5 @@
+from django.core.urlresolvers import reverse
+
 from rest_framework import serializers
 from rest_framework.compat import is_authenticated
 
@@ -32,6 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
     retweets = serializers.SerializerMethodField()
     liked_tweets = serializers.SerializerMethodField()
 
+    api = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = (
@@ -44,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             'tweets',
             'retweets',
             'liked_tweets',
+            'api',
         )
 
     def create(self, validated_data):
@@ -80,3 +85,37 @@ class UserSerializer(serializers.ModelSerializer):
             many=True,
             context=self.context
         ).data
+
+    def get_api(self, obj):
+        return {
+            'self': reverse(
+                'api:user-detail',
+                kwargs={
+                    'username': obj.username
+                }
+            ),
+            'follow': reverse(
+                'api:user-follow',
+                kwargs={
+                    'username': obj.username
+                }
+            ),
+            'unfollow': reverse(
+                'api:user-unfollow',
+                kwargs={
+                    'username': obj.username
+                }
+            ),
+            'followers': reverse(
+                'api:user-followers',
+                kwargs={
+                    'username': obj.username
+                }
+            ),
+            'following': reverse(
+                'api:user-following',
+                kwargs={
+                    'username': obj.username
+                }
+            ),
+        }
