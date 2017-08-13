@@ -9,9 +9,9 @@ User = get_user_model()
 
 urlpatterns = [
     url(
-        r'^auth/login/$',
+        r'^auth/token/obtain/$',
         obtain_jwt_token,
-        name='login'
+        name='obtain_token'
     ),
     url(
         r'^auth/register/$',
