@@ -59,7 +59,8 @@ elm-stuff/
 # elm-repl generated files
 repl-temp-*
 
-elm.js
+# Distribution
+build/
 
 # Compass
 .sass-cache
