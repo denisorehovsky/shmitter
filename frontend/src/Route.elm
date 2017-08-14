@@ -1,5 +1,6 @@
 module Route exposing
   ( Route(..)
+  , modifyUrl
   , parseLocation
   )
 
@@ -23,8 +24,28 @@ matchers =
     ]
 
 
+routeToString : Route -> String
+routeToString route =
+  let
+    pieces =
+      case route of
+        Home ->
+          []
+
+        Login ->
+          [ "login" ]
+  in
+    "#/" ++ String.join "/" pieces
+
+
 
 -- HELPERS
+
+
+modifyUrl : Route -> Cmd msg
+modifyUrl route =
+  routeToString route
+    |> Navigation.modifyUrl
 
 
 parseLocation : Location -> Maybe Route

@@ -14,6 +14,7 @@ import Http
 
 import Data.Token as Token exposing (Token)
 import Request.Token
+import Route
 import Utils exposing ((=>))
 
 
@@ -69,7 +70,7 @@ update msg model =
 
     TokenObtained (Ok token) ->
       model
-        => Token.storeToken token
+        => Cmd.batch [ Token.storeToken token, Route.modifyUrl Route.Home ]
         => SetToken token
 
     TokenObtained (Err _) ->
