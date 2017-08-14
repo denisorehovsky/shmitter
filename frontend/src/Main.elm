@@ -1,15 +1,20 @@
 module Main exposing (..)
 
+import Json.Encode exposing (Value)
+
 import Html exposing (Html, div, text)
 import Navigation exposing (Location)
 
+import Data.Token as Token exposing (Token)
+import Page.Login as Login
+import Ports
 import Route exposing (Route)
 import Utils exposing ((=>))
 
 
-main : Program Never Model Msg
+main : Program Value Model Msg
 main =
-  Navigation.program (Route.parseLocation >> SetRoute)
+  Navigation.programWithFlags (Route.parseLocation >> SetRoute)
     { init = init
     , view = view
     , update = update
@@ -25,11 +30,12 @@ type Page
   = Blank
   | NotFound
   | Home
-  | Login
+  | Login Login.Model
 
 
 type alias Model =
   { page : Page
+  , token : Maybe Token
   }
 
 
@@ -38,10 +44,11 @@ initialPage =
   Blank
 
 
-init : Location -> ( Model, Cmd Msg )
-init location =
+init : Value -> Location -> ( Model, Cmd Msg )
+init value location =
   setRoute (Route.parseLocation location)
     { page = initialPage
+    , token = Token.decodeTokenFromJson value
     }
 
 
@@ -51,6 +58,7 @@ init location =
 
 type Msg
   = SetRoute (Maybe Route)
+  | LoginMsg Login.Msg
 
 
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
@@ -65,7 +73,7 @@ setRoute maybeRoute model =
         => Cmd.none
 
     Just Route.Login ->
-      { model | page = Login }
+      { model | page = Login Login.initialModel }
         => Cmd.none
 
 
@@ -74,6 +82,28 @@ update msg model =
   case ( msg, model.page ) of
     ( SetRoute maybeRoute, _ ) ->
       setRoute maybeRoute model
+
+    ( LoginMsg subMsg, Login subModel ) ->
+      let
+        ( ( newLoginModel, cmd ), msgFromLogin ) =
+          Login.update subMsg subModel
+
+        newModel =
+          case msgFromLogin of
+            Login.NoOp ->
+              model
+
+            Login.SetToken token ->
+              { model | token = Just token }
+      in
+        { newModel | page = Login newLoginModel }
+          => Cmd.map LoginMsg cmd
+
+    ( _, NotFound ) ->
+      model => Cmd.none
+
+    ( _, _ ) ->
+      model => Cmd.none
 
 
 
@@ -92,5 +122,6 @@ view model =
     Home ->
       Html.text "Home"
 
-    Login ->
-      Html.text "Login"
+    Login subModel ->
+      Login.view subModel
+        |> Html.map LoginMsg
