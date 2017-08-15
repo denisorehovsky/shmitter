@@ -4,6 +4,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from friendship.models import Follow
+
 from .validators import UsernameValidator
 
 
@@ -77,6 +79,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.get_short_name()
+
+    @property
+    def total_followers(self):
+        return len(Follow.objects.followers(self))
+
+    @property
+    def total_following(self):
+        return len(Follow.objects.following(self))
 
     def get_full_name(self):
         return self.full_name

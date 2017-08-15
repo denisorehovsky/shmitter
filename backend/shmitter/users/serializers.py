@@ -45,6 +45,8 @@ class UserSerializer(serializers.ModelSerializer):
             'about',
             'password',
             'is_follows',
+            'total_followers',
+            'total_following',
             'tweets',
             'retweets',
             'liked_tweets',

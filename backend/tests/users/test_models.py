@@ -31,6 +31,20 @@ class TestUserModel:
         user_obj.__str__()
         mock_get_short_name.assert_called_once_with()
 
+    def test_total_followers(self, mocker):
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
+        f.FollowFactory(follower=user_1, followee=user_2)
+
+        eq_(user_2.total_followers, 1)
+
+    def test_total_following(self, mocker):
+        user_1 = f.UserFactory()
+        user_2 = f.UserFactory()
+        f.FollowFactory(follower=user_1, followee=user_2)
+
+        eq_(user_1.total_following, 1)
+
     def test_get_full_name(self, user_obj):
         eq_(user_obj.get_full_name(), user_obj.full_name)
 
