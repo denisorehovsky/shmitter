@@ -17,6 +17,19 @@ def test_is_retweeted():
     ok_(services.is_retweeted(tweet_1, user_2) is False)
 
 
+def test_get_tweets_by():
+    user_1 = f.UserFactory()
+    tweet_1 = f.TweetFactory(owner=user_1)
+    tweet_2 = f.TweetFactory(retweeted_by=[user_1])
+    f.TweetFactory()
+
+    assert_queryset_equal(
+        services.get_tweets_by(user_1),
+        [repr(tweet_1), repr(tweet_2)],
+        ordered=False
+    )
+
+
 def test_retweet():
     user_1 = f.UserFactory()
     user_2 = f.UserFactory()
