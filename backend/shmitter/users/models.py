@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from friendship.models import Follow
 
+from shmitter.tweets import services as tweets_services
 from .validators import UsernameValidator
 
 
@@ -79,6 +80,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.get_short_name()
+
+    @property
+    def total_tweets(self):
+        return tweets_services.get_tweets_by(self).count()
 
     @property
     def total_followers(self):

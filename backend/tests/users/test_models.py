@@ -31,6 +31,14 @@ class TestUserModel:
         user_obj.__str__()
         mock_get_short_name.assert_called_once_with()
 
+    def test_total_tweets(self, mocker):
+        user_1 = f.UserFactory()
+        tweets_services_mock = mocker.patch('shmitter.users.models.tweets_services')
+
+        user_1.total_tweets
+        tweets_services_mock.get_tweets_by.assert_called_once_with(user_1)
+        tweets_services_mock.get_tweets_by.return_value.count.assert_called_once_with()
+
     def test_total_followers(self, mocker):
         user_1 = f.UserFactory()
         user_2 = f.UserFactory()
