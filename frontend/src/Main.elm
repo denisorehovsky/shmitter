@@ -76,6 +76,13 @@ setRoute maybeRoute model =
       { model | page = Login Login.initialModel }
         => Cmd.none
 
+    Just Route.Logout ->
+      { model | token = Nothing }
+        => Cmd.batch
+          [ Ports.storeToken Nothing
+          , Route.modifyUrl Route.Home
+          ]
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =

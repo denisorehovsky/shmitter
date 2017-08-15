@@ -14,6 +14,7 @@ import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, top, strin
 type Route
   = Home
   | Login
+  | Logout
 
 
 matchers : Parser (Route -> a) a
@@ -21,6 +22,7 @@ matchers =
   oneOf
     [ Url.map Home top
     , Url.map Login (s "login")
+    , Url.map Logout (s "logout")
     ]
 
 
@@ -34,6 +36,9 @@ routeToString route =
 
         Login ->
           [ "login" ]
+
+        Logout ->
+          [ "logout" ]
   in
     "#/" ++ String.join "/" pieces
 
