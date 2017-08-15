@@ -50,7 +50,7 @@ userTests =
           """
         expectedUser =
           User.User
-            "testuser"
+            (User.Username "testuser")
             "testuser@shmitter.com"
             "Test User"
             Nothing
@@ -58,4 +58,15 @@ userTests =
         json
           |> Decode.decodeString User.decoder
           |> Expect.equal ( Ok expectedUser )
+  , test "Properly decodes a username" <|
+    \() ->
+      "\"testuser\""
+        |> Decode.decodeString User.usernameDecoder
+        |> Expect.equal ( Ok (User.Username "testuser") )
+  , test "Properly encodes a username" <|
+    \() ->
+      User.Username "testuser"
+        |> User.usernameEncode
+        |> Encode.encode 0
+        |> Expect.equal "\"testuser\""
   ]
