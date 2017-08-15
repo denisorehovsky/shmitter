@@ -69,8 +69,14 @@ setRoute maybeRoute model =
         => Cmd.none
 
     Just Route.Home ->
-      { model | page = Home }
-        => Cmd.none
+      case model.token of
+        Nothing ->
+          model
+            => Route.modifyUrl Route.Login
+
+        Just token ->
+          { model | page = Home }
+            => Cmd.none
 
     Just Route.Login ->
       { model | page = Login Login.initialModel }
