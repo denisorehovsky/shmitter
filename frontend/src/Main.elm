@@ -6,6 +6,7 @@ import Html exposing (Html, div, text)
 import Navigation exposing (Location)
 
 import Data.Token as Token exposing (Token)
+import Page.Home as Home
 import Page.Login as Login
 import Ports
 import Route exposing (Route)
@@ -29,7 +30,7 @@ main =
 type Page
   = Blank
   | NotFound
-  | Home
+  | Home Home.Model
   | Login Login.Model
 
 
@@ -58,6 +59,7 @@ init value location =
 
 type Msg
   = SetRoute (Maybe Route)
+  | HomeMsg Home.Msg
   | LoginMsg Login.Msg
 
 
@@ -75,7 +77,7 @@ setRoute maybeRoute model =
             => Route.modifyUrl Route.Login
 
         Just token ->
-          { model | page = Home }
+          { model | page = Home { user = "HAHA USER" } }
             => Cmd.none
 
     Just Route.Login ->
@@ -95,6 +97,14 @@ update msg model =
   case ( msg, model.page ) of
     ( SetRoute maybeRoute, _ ) ->
       setRoute maybeRoute model
+
+    ( HomeMsg subMsg, Home subModel ) ->
+      let
+        ( newHomeModel, cmd )
+          = Home.update subMsg subModel
+      in
+        { model | page = Home newHomeModel }
+          => Cmd.map HomeMsg cmd
 
     ( LoginMsg subMsg, Login subModel ) ->
       let
@@ -132,8 +142,9 @@ view model =
     NotFound ->
       Html.text "Not found"
 
-    Home ->
-      Html.text "Home"
+    Home subModel ->
+      Home.view subModel
+        |> Html.map HomeMsg
 
     Login subModel ->
       Login.view subModel
