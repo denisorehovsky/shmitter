@@ -34,7 +34,7 @@ init token =
         |> Http.toTask
 
     handlePageError _ =
-      Errored.Model "Home page is unavailable."
+      Errored.Model "Home page is currently unavailable"
   in
     Task.map Model user
       |> Task.mapError handlePageError

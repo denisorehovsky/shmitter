@@ -3,7 +3,8 @@ module Page.Errored exposing
   , view
   )
 
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, h1, h2, section, text)
+import Html.Attributes exposing (class)
 
 
 -- MODEL
@@ -20,6 +21,15 @@ type alias Model =
 
 view : Model -> Html msg
 view model =
-  div []
-    [ text model.errorMessage
+  section [ class "section is-fullwidth" ]
+    [ section [ class "hero is-medium is-danger" ]
+      [ div [ class "hero-body" ]
+        [ div [ class "container" ]
+          [ h1 [ class "title" ]
+            [ text "Error" ]
+          , h2 [ class "subtitle" ]
+            [ text model.errorMessage ]
+          ]
+        ]
+      ]
     ]
