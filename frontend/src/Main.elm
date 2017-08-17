@@ -6,6 +6,7 @@ import Html exposing (Html, div, text)
 import Navigation exposing (Location)
 
 import Data.Token as Token exposing (Token)
+import Page.Errored as Errored
 import Page.Home as Home
 import Page.Login as Login
 import Ports
@@ -30,6 +31,7 @@ main =
 type Page
   = Blank
   | NotFound
+  | Errored Errored.Model
   | Home Home.Model
   | Login Login.Model
 
@@ -141,6 +143,9 @@ view model =
 
     NotFound ->
       Html.text "Not found"
+
+    Errored subModel ->
+      Errored.view subModel
 
     Home subModel ->
       Home.view subModel
