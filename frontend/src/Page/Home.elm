@@ -1,4 +1,10 @@
-module Page.Home exposing (..)
+module Page.Home exposing
+  ( Model
+  , init
+  , Msg
+  , update
+  , view
+  )
 
 import Task exposing (Task)
 
