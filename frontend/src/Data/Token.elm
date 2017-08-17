@@ -32,6 +32,10 @@ encode (Token token) =
   Encode.string token
 
 
+
+-- STORAGE
+
+
 storeToken : Token -> Cmd msg
 storeToken token =
   encode token

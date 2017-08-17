@@ -35,7 +35,7 @@ initialModel =
 
 
 
--- UPDATE
+-- MESSAGES
 
 
 type Msg
@@ -48,6 +48,10 @@ type Msg
 type ExternalMsg
   = NoOp
   | SetToken Token
+
+
+
+-- UPDATE
 
 
 update : Msg -> Model -> ( ( Model, Cmd Msg ), ExternalMsg )

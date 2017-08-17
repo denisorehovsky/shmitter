@@ -41,11 +41,15 @@ init token =
 
 
 
--- UPDATE
+-- MESSAGES
 
 
 type Msg
   = NoOp
+
+
+
+-- UPDATE
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

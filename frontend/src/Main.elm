@@ -57,7 +57,7 @@ init value location =
 
 
 
--- UPDATE
+-- MESSAGES
 
 
 type Msg
@@ -65,6 +65,10 @@ type Msg
   | HomeLoaded (Result Errored.Model Home.Model)
   | HomeMsg Home.Msg
   | LoginMsg Login.Msg
+
+
+
+-- UPDATE
 
 
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
