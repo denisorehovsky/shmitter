@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Json.Encode exposing (Value)
+import Task
 
 import Html exposing (Html, div, text)
 import Navigation exposing (Location)
@@ -61,6 +62,7 @@ init value location =
 
 type Msg
   = SetRoute (Maybe Route)
+  | HomeLoaded (Result Errored.Model Home.Model)
   | HomeMsg Home.Msg
   | LoginMsg Login.Msg
 
@@ -79,8 +81,8 @@ setRoute maybeRoute model =
             => Route.modifyUrl Route.Login
 
         Just token ->
-          { model | page = Home { user = "HAHA USER" } }
-            => Cmd.none
+          model
+            => Task.attempt HomeLoaded (Home.init token)
 
     Just Route.Login ->
       { model | page = Login Login.initialModel }
@@ -99,6 +101,14 @@ update msg model =
   case ( msg, model.page ) of
     ( SetRoute maybeRoute, _ ) ->
       setRoute maybeRoute model
+
+    ( HomeLoaded (Ok subModel), _ ) ->
+      { model | page = Home subModel }
+        => Cmd.none
+
+    ( HomeLoaded (Err erroredModel), _ ) ->
+      { model | page = Errored erroredModel }
+        => Cmd.none
 
     ( HomeMsg subMsg, Home subModel ) ->
       let

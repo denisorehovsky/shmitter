@@ -1,9 +1,14 @@
 module Page.Home exposing (..)
 
+import Task exposing (Task)
+
 import Html exposing (Html, div, text)
+import Http
 
 import Data.Token as Token exposing (Token)
 import Data.User as User exposing (User)
+import Page.Errored as Errored
+import Request.User
 import Utils exposing ((=>))
 
 
@@ -11,12 +16,22 @@ import Utils exposing ((=>))
 
 
 type alias Model =
-  { user : String
+  { user : User
   }
 
 
--- init :
--- init =
+init : Token -> Task Errored.Model Model
+init token =
+  let
+    user =
+      Request.User.fetchByToken token
+        |> Http.toTask
+
+    handlePageError _ =
+      Errored.Model "Home page is unavailable."
+  in
+    Task.map Model user
+      |> Task.mapError handlePageError
 
 
 
