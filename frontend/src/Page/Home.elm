@@ -29,14 +29,14 @@ type alias Model =
 init : Token -> Task Errored.Model Model
 init token =
   let
-    user =
+    loadUser =
       Request.User.fetchByToken token
         |> Http.toTask
 
     handlePageError _ =
       Errored.Model "Home page is currently unavailable"
   in
-    Task.map Model user
+    Task.map Model loadUser
       |> Task.mapError handlePageError
 
 
