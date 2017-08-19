@@ -13,6 +13,7 @@ import Page.Login as Login
 import Ports
 import Route exposing (Route)
 import Utils exposing ((=>))
+import View.Navbar as Navbar
 
 
 main : Program Value Model Msg
@@ -38,7 +39,8 @@ type Page
 
 
 type alias Model =
-  { page : Page
+  { navbar : Navbar.Model
+  , page : Page
   , token : Maybe Token
   }
 
@@ -51,7 +53,8 @@ initialPage =
 init : Value -> Location -> ( Model, Cmd Msg )
 init value location =
   setRoute (Route.parseLocation location)
-    { page = initialPage
+    { navbar = Navbar.initialModel
+    , page = initialPage
     , token = Token.decodeTokenFromJson value
     }
 
@@ -62,6 +65,7 @@ init value location =
 
 type Msg
   = SetRoute (Maybe Route)
+  | NavbarMsg Navbar.Msg
   | HomeLoaded (Result Errored.Model Home.Model)
   | HomeMsg Home.Msg
   | LoginMsg Login.Msg
@@ -105,6 +109,14 @@ update msg model =
   case ( msg, model.page ) of
     ( SetRoute maybeRoute, _ ) ->
       setRoute maybeRoute model
+
+    ( NavbarMsg subMsg, _ ) ->
+      let
+        ( newNavbarModel, cmd )
+          = Navbar.update subMsg model.navbar
+      in
+        { model | navbar = newNavbarModel }
+          => Cmd.map NavbarMsg cmd
 
     ( HomeLoaded (Ok subModel), _ ) ->
       { model | page = Home subModel }
@@ -151,20 +163,29 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-  case model.page of
-    Blank ->
-      Html.text "Blank"
+  let
+    frame activePage content =
+      div []
+        [ Html.map NavbarMsg (Navbar.view model.navbar activePage)
+        , content
+        ]
+  in
+    case model.page of
+      Blank ->
+        Html.text "Blank"
 
-    NotFound ->
-      Html.text "Not found"
+      NotFound ->
+        Html.text "Not found"
 
-    Errored subModel ->
-      Errored.view subModel
+      Errored subModel ->
+        Errored.view subModel
+          |> frame Navbar.None
 
-    Home subModel ->
-      Home.view subModel
-        |> Html.map HomeMsg
+      Home subModel ->
+        Home.view subModel
+          |> Html.map HomeMsg
+          |> frame Navbar.Home
 
-    Login subModel ->
-      Login.view subModel
-        |> Html.map LoginMsg
+      Login subModel ->
+        Login.view subModel
+          |> Html.map LoginMsg

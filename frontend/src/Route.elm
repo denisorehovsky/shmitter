@@ -1,8 +1,12 @@
 module Route exposing
   ( Route(..)
+  , href
   , modifyUrl
   , parseLocation
   )
+
+import Html
+import Html.Attributes
 
 import Navigation exposing (Location)
 import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, top, string)
@@ -45,6 +49,11 @@ routeToString route =
 
 
 -- HELPERS
+
+
+href : Route -> Html.Attribute msg
+href route =
+  Html.Attributes.href (routeToString route)
 
 
 modifyUrl : Route -> Cmd msg
