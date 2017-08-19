@@ -10,6 +10,7 @@ import Data.Token as Token exposing (Token)
 import Page.Errored as Errored
 import Page.Home as Home
 import Page.Login as Login
+import Page.NotFound as NotFound
 import Ports
 import Route exposing (Route)
 import Utils exposing ((=>))
@@ -175,7 +176,8 @@ view model =
         Html.text "Blank"
 
       NotFound ->
-        Html.text "Not found"
+        NotFound.view
+          |> frame Navbar.None
 
       Errored subModel ->
         Errored.view subModel
