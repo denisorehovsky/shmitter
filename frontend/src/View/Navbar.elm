@@ -21,7 +21,7 @@ import Utils exposing ((=>))
 type ActivePage
   = None
   | Home
-  | Logout
+  | Signout
 
 
 type LinkFor
@@ -92,7 +92,7 @@ view model activePage =
               ]
             , text "Profile"
             ]
-          , navbarLink Route.Logout (activePage == Logout) All [ text "Log out" ]
+          , navbarLink Route.Signout (activePage == Signout) All [ text "Sign out" ]
           ]
         ]
       ]

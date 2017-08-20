@@ -9,8 +9,8 @@ import Navigation exposing (Location)
 import Data.Token as Token exposing (Token)
 import Page.Errored as Errored
 import Page.Home as Home
-import Page.Login as Login
 import Page.NotFound as NotFound
+import Page.Signin as Signin
 import Ports
 import Route exposing (Route)
 import Utils exposing ((=>))
@@ -36,7 +36,7 @@ type Page
   | NotFound
   | Errored Errored.Model
   | Home Home.Model
-  | Login Login.Model
+  | Signin Signin.Model
 
 
 type alias Model =
@@ -69,7 +69,7 @@ type Msg
   | NavbarMsg Navbar.Msg
   | HomeLoaded (Result Errored.Model Home.Model)
   | HomeMsg Home.Msg
-  | LoginMsg Login.Msg
+  | SigninMsg Signin.Msg
 
 
 
@@ -87,17 +87,17 @@ setRoute maybeRoute model =
       case model.token of
         Nothing ->
           model
-            => Route.modifyUrl Route.Login
+            => Route.modifyUrl Route.Signin
 
         Just token ->
           model
             => Task.attempt HomeLoaded (Home.init token)
 
-    Just Route.Login ->
-      { model | page = Login Login.initialModel }
+    Just Route.Signin ->
+      { model | page = Signin Signin.initialModel }
         => Cmd.none
 
-    Just Route.Logout ->
+    Just Route.Signout ->
       { model | token = Nothing }
         => Cmd.batch
           [ Ports.storeToken Nothing
@@ -135,21 +135,21 @@ update msg model =
         { model | page = Home newHomeModel }
           => Cmd.map HomeMsg cmd
 
-    ( LoginMsg subMsg, Login subModel ) ->
+    ( SigninMsg subMsg, Signin subModel ) ->
       let
-        ( ( newLoginModel, cmd ), msgFromLogin ) =
-          Login.update subMsg subModel
+        ( ( newSigninModel, cmd ), msgFromSignin ) =
+          Signin.update subMsg subModel
 
         newModel =
-          case msgFromLogin of
-            Login.NoOp ->
+          case msgFromSignin of
+            Signin.NoOp ->
               model
 
-            Login.SetToken token ->
+            Signin.SetToken token ->
               { model | token = Just token }
       in
-        { newModel | page = Login newLoginModel }
-          => Cmd.map LoginMsg cmd
+        { newModel | page = Signin newSigninModel }
+          => Cmd.map SigninMsg cmd
 
     ( _, NotFound ) ->
       model => Cmd.none
@@ -188,6 +188,6 @@ view model =
           |> Html.map HomeMsg
           |> frame Navbar.Home
 
-      Login subModel ->
-        Login.view subModel
-          |> Html.map LoginMsg
+      Signin subModel ->
+        Signin.view subModel
+          |> Html.map SigninMsg

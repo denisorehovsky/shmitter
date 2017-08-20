@@ -1,4 +1,4 @@
-module Page.Login exposing
+module Page.Signin exposing
   ( Model
   , initialModel
   , Msg
@@ -119,7 +119,7 @@ view model =
                 , footer [ class "card-footer" ]
                   [ a [ class "card-footer-item" ]
                     [ button [ class "button is-success", type_ "submit" ]
-                      [ text "Log in" ]
+                      [ text "Sign in" ]
                     ]
                   ]
                 ]

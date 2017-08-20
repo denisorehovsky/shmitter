@@ -17,16 +17,16 @@ import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, top, strin
 
 type Route
   = Home
-  | Login
-  | Logout
+  | Signin
+  | Signout
 
 
 matchers : Parser (Route -> a) a
 matchers =
   oneOf
     [ Url.map Home top
-    , Url.map Login (s "login")
-    , Url.map Logout (s "logout")
+    , Url.map Signin (s "signin")
+    , Url.map Signout (s "signout")
     ]
 
 
@@ -38,11 +38,11 @@ routeToString route =
         Home ->
           []
 
-        Login ->
-          [ "login" ]
+        Signin ->
+          [ "signin" ]
 
-        Logout ->
-          [ "logout" ]
+        Signout ->
+          [ "signout" ]
   in
     "#/" ++ String.join "/" pieces
 
